@@ -1,10 +1,7 @@
 package com.example.utils;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 
@@ -81,7 +78,7 @@ public class PostLogger {
 			while (line != null) {
 				String trimmedLine = line.trim();
 				String toDeleteTrimmed = toDelete.trim();
-				if (trimmedLine.length() > 0 && !toDeleteTrimmed.equals(trimmedLine)) {
+				if (line.isEmpty() || !toDeleteTrimmed.equals(trimmedLine)) {
 					r2.write(line+System.lineSeparator());
                 }
 				else delete = true;
@@ -89,7 +86,8 @@ public class PostLogger {
 			}
 			r1.close();  r2.close();
 			fr1.close(); fr2.close();
-			return (delete && file2.renameTo(file1));
+			Files.move(Paths.get(tmpPath), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+			return delete;
     	} catch (IOException e) {
 			e.printStackTrace();
             return false;

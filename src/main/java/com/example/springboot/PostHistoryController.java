@@ -48,9 +48,12 @@ public class PostHistoryController {
 	   	model.addAttribute("title", "Delete Page");
 	   	String pathToLogFile = env.getProperty("post.log.file");
 	   	PostLogger pl = new PostLogger(pathToLogFile);
-	   	boolean deleted = pl.deleteString(deleteText);
-       	model.addAttribute("deleted", deleted);
-		if (!deleteText.isEmpty()) model.addAttribute("deleteAttempted", true);
+		if (!deleteText.isEmpty())
+		{
+			boolean deleted = pl.deleteString(deleteText);
+			model.addAttribute("deleted", deleted);
+			model.addAttribute("deleteAttempted", true);
+		}
         return "delete";
     }
 
